@@ -1,11 +1,11 @@
 # Restful web service for Meeting 
 
 
-### [project Statement]()  
+### [project Statement](https://github.com/AhmedFouad60/RestfulApiMeetings)  
 
 1-`Users` should be able to `Create` ,`Update` And `delete` meetings.
-2-furthermore ,`other` users should be able to  `Register` and `unRegister` for any created Meeting 
-3-lately,it should be possible to `retrieve` a list of all Meetings or data about an `individual meeting`
+2- furthermore ,`other` users should be able to  `Register` and `unRegister` for any created Meeting 
+3- lately,it should be possible to `retrieve` a list of all Meetings or data about an `individual meeting`
 
 API's
 -
