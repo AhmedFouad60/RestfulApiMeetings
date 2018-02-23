@@ -1,7 +1,7 @@
 # Restful web service for Meeting 
 
 
-### [project Statement](#)  
+### [project Statement]()  
 
 * `Users` should be able to `Create` ,`Update` And `delete` meetings.   
 *  furthermore ,`other` users should be able to  `Register` and `unRegister` for any created Meeting 
@@ -46,122 +46,105 @@ API's
             ```    
 * Meetings
     > ##### Create Meeting  
-    - [X] <a>post</a>  /api/v1/meeting
+    - [X] <a>post</a>  /api/v1/users/signin
         * Request
             ```json
             {
-                "Title":"title",
-                "Description":"description",
-                "Time":"15/2/2017",
-                "User_ID":"2"
+                "email":"user@example.com",
+                "password":"password"
             }
             ```
         * Response 
             ```json 
             {
-                "Summary": "This is good Meeting",
+                "token": "__TOKEN__ IF SUCCESS",
                 "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__",
-                "URL":"__URL___"
-                "Users":"__USERS__"
+                "error": "___ERROR_VALUE__"
             }
             ```
     > ##### Update Meeting 
-    - [X] <a>PATCH</a>  /api/v1/meeting
+    - [X] <a>post</a>  /api/v1/users/signin
         * Request
             ```json
             {
-                "User_ID":   "__USERID__"
-                "Meeting_ID" :       "user@example.com",
-                "Meeting_data":     {
-                    "Title":"title",
-                    "Description":"description",
-                    "Time":"15/2/2017",
-                    "User_ID":"2"
-                }
+                "first_name":   "ahmed"
+                "email" :       "user@example.com",
+                "password":     "password"
             }
             ```
         * Response 
             ```json 
             {
-                "Summary": "This is good Meeting",
                 "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__",
-                "URL":"__URL___"
-                "Users":"__USERS__"
+                "error": "___ERROR_VALUE__"
             }
             ``` 
             > ##### Delete Meeting
-    - [X] <a>DELETE</a>  /api/v1/meeting
+    - [X] <a>post</a>  /api/v1/users/signin
         * Request
             ```json
             {
-                "User_ID":   "__USERID__",
-                "Meeting_ID" :       "__MeetingID__"   
+                "first_name":   "ahmed"
+                "email" :       "user@example.com",
+                "password":     "password"
             }
             ```
         * Response 
             ```json 
             {
-                "msg": "__MESSAGE_TEXT__"
-                
+                "msg": "__MESSAGE_TEXT__",
+                "error": "___ERROR_VALUE__"
             }
             ``` 
             > ##### Register Meeting
-    - [X] <a>post</a>  /api/v1/meeting/register
+    - [X] <a>post</a>  /api/v1/users/signin
         * Request
             ```json
             {
-                "User_ID":   "__USERID__",
-                "Meeting_ID" :       "__MeetingID__" 
+                "first_name":   "ahmed"
+                "email" :       "user@example.com",
+                "password":     "password"
             }
             ```
         * Response 
             ```json 
             {
                 "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__",
-                "user":{
-                        "first_name":   "ahmed"
-                         "email" :       "user@example.com",
-                },
-                "URL":"__URL__"
+                "error": "___ERROR_VALUE__"
             }
             ``` 
             > ##### UnRegister Meeting
-    - [X] <a>DELETE</a>  /api/v1/meeting/unregister
+    - [X] <a>post</a>  /api/v1/users/signin
         * Request
             ```json
             {
-                "User_ID":   "__USERID__",
-                "Meeting_ID" :       "__MeetingID__" 
+                "first_name":   "ahmed"
+                "email" :       "user@example.com",
+                "password":     "password"
             }
             ```
         * Response 
             ```json 
             {
                 "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__",
-                "user":{
-                        "first_name":   "ahmed"
-                         "email" :       "user@example.com",
-                },
-                "URL":"__URL__"
+                "error": "___ERROR_VALUE__"
             }
             ```             
             > ##### Get List of  Meetings
-    - [X] <a>GET</a>  /api/v1/meeting
+    - [X] <a>post</a>  /api/v1/users/signin
         * Request
             ```json
             {
-                null
+                "first_name":   "ahmed"
+                "email" :       "user@example.com",
+                "password":     "password"
             }
             ```
         * Response 
             ```json 
             {
-                List of all Meeting,
-                URL
+                "msg": "__MESSAGE_TEXT__",
+                "error": "___ERROR_VALUE__"
             }
             ```                 
             
@@ -170,15 +153,34 @@ API's
         * Request
             ```json
             {
-                "Meeting_ID" :       "__MeetingID__" 
+                "first_name":   "ahmed"
+                "email" :       "user@example.com",
+                "password":     "password"
             }
             ```
         * Response 
             ```json 
             {
-                Meeting_info,
-                URL
+                "msg": "__MESSAGE_TEXT__",
+                "error": "___ERROR_VALUE__"
             }
             ```                 
+            
+## Some Commands Used            
+    
+* #### Create controller with helper function 
+    ```php
+    >    php artisan make:controller MeetingController --resourse
+    >    php artisan make:controller RegistrationController --resourse
+    >    php artisan make:controller AuthController 
+# hello
+    
+    
+    
+            
+            
+            
+            
+            
             
                         
