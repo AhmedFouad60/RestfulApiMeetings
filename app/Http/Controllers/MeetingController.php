@@ -32,6 +32,44 @@ class MeetingController extends Controller
      */
     public function store(Request $request)
     {
+
+
+        /***********validate input*******/
+
+
+        /***********Extract Data*******/
+
+        $title=$request->input('title');
+        $description=$request->input('description');
+        $time=$request->input('time');
+        $user_id=$request->input('user_id');
+
+        /***********apply business logic*******/
+
+
+
+        /***********Response*******/
+
+        $meeting=[
+            'title'=>$title,
+            'description'=>$description,
+            'time'=>$time,
+            'user_id'=>$user_id,
+            'view_meeting'=>[
+                'href'=>'api/v1/meeting/1',
+                'method'=>'GET'
+            ]
+        ];
+
+        $response=[
+
+        ];
+
+
+
+
+
+
         return "It works";
     }
 
@@ -43,6 +81,14 @@ class MeetingController extends Controller
      */
     public function show($id)
     {
+        //Request
+        //validate input
+        //Extract Data
+        //apply business logic
+        //Response
+
+
+
         return "It works";
     }
 
@@ -55,6 +101,13 @@ class MeetingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //Request
+        //validate input
+        //Extract Data
+        //apply business logic
+        //Response
+
+
         return "It works";
     }
 
@@ -66,6 +119,14 @@ class MeetingController extends Controller
      */
     public function destroy($id)
     {
+        //Request
+        //validate input
+        //Extract Data
+        //apply business logic
+        //Response
+
+
+
         return "It works";
     }
 }

@@ -16,6 +16,20 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
+        /***********validate input*******/
+
+
+        /***********Extract Data*******/
+        $meeting_id=$request->input("meeting_id");
+        $user_id=$request->input("user_id");
+
+        /***********apply business logic*******/
+
+
+
+        /***********Response*******/
+
+
         return "It works";
     }
 
@@ -30,6 +44,12 @@ class RegistrationController extends Controller
      */
     public function destroy($id)
     {
+        //Request
+        //validate input
+        //Extract Data
+        //apply business logic
+        //Response
+
         return "It works";
     }
 }

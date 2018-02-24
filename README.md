@@ -46,123 +46,155 @@ API's
             ```    
 * Meetings
     > ##### Create Meeting  
-    - [X] <a>post</a>  /api/v1/users/signin
+    - [X] <a>post</a>  /api/v1/meeting
         * Request
             ```json
             {
-                "email":"user@example.com",
-                "password":"password"
+                "Title": "title"',
+                "Description": "description",
+                "Time":"time",
+                "User_ID":"user_id"
             }
             ```
         * Response 
             ```json 
             {
-                "token": "__TOKEN__ IF SUCCESS",
                 "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__"
+                "error": "___ERROR_VALUE__",
+                "summary":"__SUMMARY__",
+                "meeting_URL":"__MEETINGURL__",
+                "partcipants":[
+                    "ahmed","Ali","sayed" ...]
+                
             }
             ```
     > ##### Update Meeting 
-    - [X] <a>post</a>  /api/v1/users/signin
+    - [X] <a>PATCH</a>  /api/v1/meeting
         * Request
             ```json
             {
-                "first_name":   "ahmed"
-                "email" :       "user@example.com",
-                "password":     "password"
+                "Title": "title"',
+                "Description": "description",
+                "Time":"time",
+                "User_ID":"user_id",
+                "Meeting_ID":"meeting_id"
             }
             ```
         * Response 
             ```json 
             {
-                "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__"
+                 "msg": "__MESSAGE_TEXT__",
+                "error": "___ERROR_VALUE__",
+                "summary":"__SUMMARY__",
+                "meeting_URL":"__MEETINGURL__",
+                "partcipants":[
+                    "ahmed","Ali","sayed" ...]
             }
             ``` 
             > ##### Delete Meeting
-    - [X] <a>post</a>  /api/v1/users/signin
+    - [X] <a>DELETE</a>  /api/v1/meeting
         * Request
             ```json
             {
-                "first_name":   "ahmed"
-                "email" :       "user@example.com",
-                "password":     "password"
+               "User_ID":"user_id",
+                "Meeting_ID":"meeting_id"
             }
             ```
         * Response 
             ```json 
             {
                 "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__"
+                
             }
             ``` 
             > ##### Register Meeting
-    - [X] <a>post</a>  /api/v1/users/signin
+    - [X] <a>post</a>  /api/v1/meeting/registration
         * Request
             ```json
             {
-                "first_name":   "ahmed"
-                "email" :       "user@example.com",
-                "password":     "password"
+                "User_ID":"user_id",
+                "Meeting_ID":"meeting_id"
             }
             ```
         * Response 
             ```json 
             {
                 "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__"
+                "Meeting_info":[
+                    "summary":"__SUMMARY__",
+                    "meeting_URL":"__MEETINGURL__",
+                    "partcipants":[
+                                    "ahmed","Ali","sayed" ...]
+
+                ],
+                "User_info":[
+                
+                "first_name":   "ahmed"
+                "email" :       "user@example.com",
+                
+                ],
+                "UnRegisterLink":"__LINK__"
             }
             ``` 
             > ##### UnRegister Meeting
-    - [X] <a>post</a>  /api/v1/users/signin
+    - [X] <a>post</a>  /api/v1/meeting/unregistraion
         * Request
             ```json
             {
-                "first_name":   "ahmed"
-                "email" :       "user@example.com",
-                "password":     "password"
+                  "User_ID":"user_id",
+                "Meeting_ID":"meeting_id"
             }
             ```
         * Response 
             ```json 
             {
-                "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__"
+             "msg": "__MESSAGE_TEXT__",
+                "Meeting_info":[
+                    "summary":"__SUMMARY__",
+                    "meeting_URL":"__MEETINGURL__",
+                    "partcipants":[
+                                    "ahmed","Ali","sayed" ...]
+
+                ],
+                "User_info":[
+                
+                "first_name":   "ahmed"
+                "email" :       "user@example.com",
+                
+                ],
+                "RegisterLink":"__LINK__"
             }
             ```             
             > ##### Get List of  Meetings
-    - [X] <a>post</a>  /api/v1/users/signin
+    - [X] <a>GET</a>  /api/v1/meeting
         * Request
             ```json
             {
-                "first_name":   "ahmed"
-                "email" :       "user@example.com",
-                "password":     "password"
+                no-data
             }
             ```
         * Response 
             ```json 
             {
-                "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__"
+                "Meeting_info":MeetingInfo,
+                "linkS_to_indivudal_meetin"
             }
             ```                 
             
             > ##### Get Meeting
-    - [X] <a>post</a>  /api/v1/users/signin
+    - [X] <a>GET</a>  /api/v1/meeting/{id}
         * Request
             ```json
             {
-                "first_name":   "ahmed"
-                "email" :       "user@example.com",
-                "password":     "password"
+                "Meeting_ID":"meeting_id"
+
             }
             ```
         * Response 
             ```json 
             {
-                "msg": "__MESSAGE_TEXT__",
-                "error": "___ERROR_VALUE__"
+                "Meeting_info":MeetingInfo,
+                "LINK_TO_LIST_OF_ALL_MEETINGS":"__link__"
             }
             ```                 
             
