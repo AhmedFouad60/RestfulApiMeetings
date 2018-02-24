@@ -1,7 +1,7 @@
 # Restful web service for Meeting 
 
 
-### [project Statement]()  
+### [project Statement](#)  
 
 * `Users` should be able to `Create` ,`Update` And `delete` meetings.   
 *  furthermore ,`other` users should be able to  `Register` and `unRegister` for any created Meeting 
@@ -49,9 +49,9 @@ API's
         * Request
             ```json
             {
-                "first_name":   "ahmed"
-                "email" :       "user@example.com",
-                "password":     "password"
+                "first_name":"ahmed"
+                "email":"user@example.com",
+                "password":"password"
             }
             ```
         * Response 
@@ -67,8 +67,8 @@ API's
         * Request
             ```json
             {
-                "Title": "title"',
-                "Description": "description",
+                "Title":"title",
+                "Description":"description",
                 "Time":"time",
                 "User_ID":"user_id"
             }
@@ -90,7 +90,7 @@ API's
         * Request
             ```json
             {
-                "Title": "title"',
+                "Title": "title",
                 "Description": "description",
                 "Time":"time",
                 "User_ID":"user_id",
@@ -220,6 +220,20 @@ API's
     >    php artisan make:controller MeetingController --resourse
     >    php artisan make:controller RegistrationController --resourse
     >    php artisan make:controller AuthController 
+    
+* #### Input Validation
+```php
+$this->validate($request,[	
+		//$request is the collected data sent to the route
+	‘Title’ => ‘required|max:120’, 			//rules
+	‘content’=>’required’
+]);
+```
+
+## Support Materials
+
+### [Avaliable validation rules](https://laravel.com/docs/5.6/validation#available-validation-rules)
+    
 # hello
     
     

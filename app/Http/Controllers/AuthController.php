@@ -9,6 +9,12 @@ class AuthController extends Controller
     public function store(Request $request){
         /***********validate input*******/
 
+        $this->validate($request,[
+            'first_name'=>'required|max:120',
+            'email'=>'required|email'
+        ]);
+
+
 
         /***********Extract Data*******/
         $first_name=$request->input("first_name");
@@ -32,7 +38,10 @@ class AuthController extends Controller
 
     public function signin(Request $request){
         /***********validate input*******/
-
+       $this->validate($request,[
+           'email'=>'required',
+           'password'=>'required'
+       ]);
 
         /***********Extract Data*******/
         $email=$request->input("email");

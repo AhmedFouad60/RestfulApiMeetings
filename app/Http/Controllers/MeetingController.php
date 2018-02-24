@@ -58,10 +58,10 @@ class MeetingController extends Controller
         /***********Extract Data*******/
 
 
-        $title=$request->input("title");
-        $description=$request->input("description");
-        $time=$request->input("time");
-        $user_id=$request->input("user_id");
+        $title=$request->input('title');
+        $description=$request->input('description');
+        $time=$request->input('time');
+        $user_id=$request->input('user_id');
 
         /***********apply business logic*******/
 
