@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class MeetingController extends Controller
 {
@@ -20,7 +21,24 @@ class MeetingController extends Controller
      */
     public function index()
     {
-        return "It works";
+        $meeting=[
+            'title'=>'Title',
+            'description'=>'description',
+            'time'=>'time',
+            'user_id'=>'user_id',
+            'view_meeting'=>[
+                'href'=>'api/v1/meeting/1',
+                'method'=>'GET'
+            ]
+        ];
+
+        $response=[
+            'msg'=>'List of all Meetings',
+            'meetings'=>[$meeting,$meeting]
+        ];
+
+        return response()->json($response,200);
+
     }
 
 
@@ -39,10 +57,11 @@ class MeetingController extends Controller
 
         /***********Extract Data*******/
 
-        $title=$request->input('title');
-        $description=$request->input('description');
-        $time=$request->input('time');
-        $user_id=$request->input('user_id');
+
+        $title=$request->input("title");
+        $description=$request->input("description");
+        $time=$request->input("time");
+        $user_id=$request->input("user_id");
 
         /***********apply business logic*******/
 
@@ -51,7 +70,7 @@ class MeetingController extends Controller
         /***********Response*******/
 
         $meeting=[
-            'title'=>$title,
+            'title'=> $title,
             'description'=>$description,
             'time'=>$time,
             'user_id'=>$user_id,
@@ -62,15 +81,17 @@ class MeetingController extends Controller
         ];
 
         $response=[
+            "msg"=> "Meeting Created successfully",
+            "error"=> "0",
+            "summary"=>$meeting,
+            "meeting_URL"=>"__MEETINGURL__",
+            "partcipants"=>[
+            "ahmed","Ali","sayed" ]
 
         ];
 
+        return response()->json($response,200);
 
-
-
-
-
-        return "It works";
     }
 
     /**
@@ -119,14 +140,31 @@ class MeetingController extends Controller
      */
     public function destroy($id)
     {
-        //Request
-        //validate input
-        //Extract Data
-        //apply business logic
-        //Response
+        /***********validate input*******/
+
+
+        /***********Extract Data*******/
 
 
 
-        return "It works";
+        /***********apply business logic*******/
+
+
+
+        /***********Response*******/
+        $response=[
+            'msg'=>'Meeting deleted',
+            'create'=>[
+                'href'=>'api/v1/meeting',
+                'method'=>'POST',
+                'params'=>'title,description,time'
+            ]
+        ];
+
+        return response()->json($response,200);
+
+
+
+
     }
 }

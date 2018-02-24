@@ -20,12 +20,16 @@ class AuthController extends Controller
 
 
         /***********Response*******/
+        $response=[
+            'msg'=>'User signed up successfully',
+            'error'=>'0'
+        ];
 
 
-
-        return "It works";
+        return response()->json($response,200);
 
     }
+
     public function signin(Request $request){
         /***********validate input*******/
 

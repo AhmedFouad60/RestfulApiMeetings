@@ -7,6 +7,23 @@
 *  furthermore ,`other` users should be able to  `Register` and `unRegister` for any created Meeting 
 * lately,it should be possible to `retrieve` a list of all Meetings or data about an `individual meeting`
 
+## Steps when writing Restful Service
+* project statement from the customer of the Service
+* Decomposite the statement to  api's parts 
+* Writting API's  `{Request,Response}`
+* GO TO LARAVEL project 
+    * Writting the Routes
+    * Writting controller's 
+        * In controller :
+            * `Test the API's`
+                * extract the Inputs from the request 
+                * Return Response
+            * Validate the Inputs
+            * Extract the inputs from the Request
+            * Apply the business logic
+            * Response Again
+
+
 API's
 -
 * Users
@@ -120,18 +137,16 @@ API's
             ```json 
             {
                 "msg": "__MESSAGE_TEXT__",
-                "Meeting_info":[
+                "Meeting":[
                     "summary":"__SUMMARY__",
                     "meeting_URL":"__MEETINGURL__",
                     "partcipants":[
                                     "ahmed","Ali","sayed" ...]
 
                 ],
-                "User_info":[
+                "User":[
                 
                 "first_name":   "ahmed"
-                "email" :       "user@example.com",
-                
                 ],
                 "UnRegisterLink":"__LINK__"
             }
