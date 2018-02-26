@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request){
         /***********validate input*******/
 
@@ -22,17 +27,39 @@ class AuthController extends Controller
         $password=$request->input("password");
 
         /***********apply business logic*******/
+        $user=new User([
+            'name'=>$first_name,
+            'email'=>$email,
+            'password'=>bcrypt($password)
+        ]);
+
+        if($user->save()){ #save the user to the database
+
+            $user->sigin=[
+                'href'=>'api/v1/user/signin',
+                'method'=>'POST',
+                'params'=>'email,password'
+            ];
+            /***********Response OK *******/
+            $response=[
+                'msg'=>'User signed up successfully',
+                'error'=>'0',
+                'user'=>$user
+            ];
+            return response()->json($response,200);
+
+        }
 
 
 
         /***********Response*******/
         $response=[
-            'msg'=>'User signed up successfully',
-            'error'=>'0'
+            'msg'=>'An Error occurred',
+            'error'=>'1'
         ];
 
 
-        return response()->json($response,200);
+        return response()->json($response,404);
 
     }
 

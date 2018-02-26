@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Meeting extends Model
 {
     protected $fillable=['title','time','description'];
-    public function uesrs(){
+    public function Users(){
         return $this->belongsToMany('App\User');
     }
 }

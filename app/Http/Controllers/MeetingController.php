@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Meeting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -21,20 +23,20 @@ class MeetingController extends Controller
      */
     public function index()
     {
-        $meeting=[
-            'title'=>'Title',
-            'description'=>'description',
-            'time'=>'time',
-            'user_id'=>'user_id',
-            'view_meeting'=>[
-                'href'=>'api/v1/meeting/1',
+
+        $meetings=Meeting::all();
+
+        foreach ($meetings as $meeting){
+            $meeting->view_meeting=[
+                'href'=>'api/v1/meeting/'.$meeting->id,
                 'method'=>'GET'
-            ]
-        ];
+            ];
+
+        }
 
         $response=[
             'msg'=>'List of all Meetings',
-            'meetings'=>[$meeting,$meeting]
+            'meetings'=>$meeting
         ];
 
         return response()->json($response,200);
@@ -53,7 +55,11 @@ class MeetingController extends Controller
 
 
         /***********validate input*******/
-
+        $this->validate($request,[
+           'title'=>'required|max:150',
+           'time'=>'required',
+           'description'=>'required'
+        ]);
 
         /***********Extract Data*******/
 
@@ -64,33 +70,51 @@ class MeetingController extends Controller
         $user_id=$request->input('user_id');
 
         /***********apply business logic*******/
-
-
-
-        /***********Response*******/
-
-        $meeting=[
-            'title'=> $title,
+        $meeting=new Meeting([
+            'title'=>$title,
             'description'=>$description,
-            'time'=>$time,
-            'user_id'=>$user_id,
-            'view_meeting'=>[
-                'href'=>'api/v1/meeting/1',
-                'method'=>'GET'
-            ]
-        ];
+            'time'=>$time
+        ]);
+
+
+        if($meeting->save()){
+            $meeting->Users()->attach($user_id);
+            $meeting=[
+                'title'=> $title,
+                'description'=>$description,
+                'time'=>$time,
+                'user_id'=>$user_id,
+                'view_meeting'=>[
+                    'href'=>'api/v1/meeting/'.$meeting->id,
+                    'method'=>'GET'
+                ]
+            ];
+
+            $response=[
+                "msg"=> "Meeting Created successfully",
+                "error"=> "0",
+                "summary"=>$meeting,
+                "meeting_URL"=>"__MEETINGURL__",
+                "partcipants"=>[
+                    "ahmed","Ali","sayed" ]
+
+            ];
+            /***********Response OK *******/
+
+            return response()->json($response,200);
+
+
+        }
+
+        /***********Response 404 *******/
 
         $response=[
-            "msg"=> "Meeting Created successfully",
-            "error"=> "0",
-            "summary"=>$meeting,
-            "meeting_URL"=>"__MEETINGURL__",
-            "partcipants"=>[
-            "ahmed","Ali","sayed" ]
+            'msg'=>'An Error occurred',
+            'error'=>'1'
 
         ];
 
-        return response()->json($response,200);
+        return response()->json($response,404);
 
     }
 
@@ -102,15 +126,19 @@ class MeetingController extends Controller
      */
     public function show($id)
     {
-        //Request
-        //validate input
-        //Extract Data
-        //apply business logic
-        //Response
+       $meeting=Meeting::with('users')->where('id',$id)->firstOrFail();
+        $meeting->view_meetings=[
+            'href'=>'api/v1/meeting',
+            'method'=>'GET'
+        ];
+
+        $response=[
+          'msg'=>'Meeting info',
+          'meeting'=>$meeting
+        ];
 
 
-
-        return "It works";
+        return response()->json($response,200);
     }
 
     /**
@@ -122,14 +150,61 @@ class MeetingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //Request
-        //validate input
-        //Extract Data
-        //apply business logic
-        //Response
+
+        /***********validate input*******/
+        $this->validate($request,[
+            'title'=>'required',
+            'time'=>'required|date_format:YmdHie',
+            'description'=>'required',
+            'user_id'=>'required'
+
+        ]);
+        /***********Extract Data*******/
+        $title=$request->input('title');
+        $time=$request->input('time');
+        $description=$request->input('description');
+        $user_id=$request->input('user_id');
+        /***********apply business logic*******/
+        $meeting=[
+            'title'=> $title,
+            'description'=>$description,
+            'time'=>$time,
+            'user_id'=>$user_id,
+            'view_meeting'=>[
+                'href'=>'api/v1/meeting/1',
+                'method'=>'GET'
+            ]
+        ];
+
+        $meeting=Meeting::with('users')->firstOrFail($id);
 
 
-        return "It works";
+        if (!$meeting->users()->where('users.id',$user_id)->first()){
+
+            /***********Response 404 *******/
+            return response()->json(['msg'=>'user not registered for meeting ,update not successful'],404);
+        }
+
+        $meeting->time=$time;
+        $meeting->title=$title;
+        $meeting->description=$description;
+
+        if(!$meeting->update()){
+            return response()->json(['msg'=>'Error during updating'],404);
+        }
+
+        $meeting->view_meeting=[
+            'href'=>'api/v1/meeting/'.$meeting->id,
+            'method'=>'GET'
+        ];
+        /***********Response OK*******/
+        $response=[
+            'msg'=>'Meeting updated',
+            'meeting'=>$meeting
+        ];
+
+        return response().json($response,200);
+
     }
 
     /**
