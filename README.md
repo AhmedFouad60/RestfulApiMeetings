@@ -220,7 +220,14 @@ API's
     >    php artisan make:controller MeetingController --resourse
     >    php artisan make:controller RegistrationController --resourse
     >    php artisan make:controller AuthController 
-    
+* #### Create Model with Migrations 
+     ```php
+        #To make model and migration tables
+            >php artisan make:model Meeting -m
+        #To migrate the tables to the DB
+            >php artisan migrate 
+    ```    
+
 * #### Input Validation
 ```php
 $this->validate($request,[	
