@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
+
 
 class AuthController extends Controller
 {
@@ -66,23 +70,29 @@ class AuthController extends Controller
     public function signin(Request $request){
         /***********validate input*******/
        $this->validate($request,[
-           'email'=>'required',
+           'email'=>'required|email',
            'password'=>'required'
        ]);
 
         /***********Extract Data*******/
-        $email=$request->input("email");
-        $password=$request->input("password");
+        $credentials=$request->only('email','password');
 
         /***********apply business logic*******/
+        try{
+            if (!$token = JWTAuth::attempt($credentials)){
+                return response()->json(['msg'=>'Invalid credentials'],401);
+            }
 
+        }catch (JWTException $e){
+            return response()->json(['msg'=>'could not create token'],500);
+        }
 
 
         /***********Response*******/
 
 
         return response()->json([
-            "token"=>'foushToken',
+            "token"=>$token,
             "msg"=>'sign in successfully',
             "error"=>'0'
         ],200);

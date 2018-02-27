@@ -63,14 +63,13 @@ API's
             ```    
 * Meetings
     > ##### Create Meeting  
-    - [X] <a>post</a>  /api/v1/meeting
+    - [X] <a>post</a>  /api/v1/meeting?token=$Token
         * Request
             ```json
             {
                 "Title":"title",
                 "Description":"description",
                 "Time":"time",
-                "User_ID":"user_id"
             }
             ```
         * Response 
@@ -86,14 +85,13 @@ API's
             }
             ```
     > ##### Update Meeting 
-    - [X] <a>PATCH</a>  /api/v1/meeting
+    - [X] <a>PATCH</a>  /api/v1/meeting?token=$Token
         * Request
             ```json
             {
                 "Title": "title",
                 "Description": "description",
                 "Time":"time",
-                "User_ID":"user_id",
                 "Meeting_ID":"meeting_id"
             }
             ```
@@ -109,11 +107,10 @@ API's
             }
             ``` 
             > ##### Delete Meeting
-    - [X] <a>DELETE</a>  /api/v1/meeting
+    - [X] <a>DELETE</a>  /api/v1/meeting?token=$Token
         * Request
             ```json
             {
-               "User_ID":"user_id",
                 "Meeting_ID":"meeting_id"
             }
             ```
@@ -125,11 +122,10 @@ API's
             }
             ``` 
             > ##### Register Meeting
-    - [X] <a>post</a>  /api/v1/meeting/registration
+    - [X] <a>post</a>  /api/v1/meeting/registration?token=$Token
         * Request
             ```json
             {
-                "User_ID":"user_id",
                 "Meeting_ID":"meeting_id"
             }
             ```
@@ -152,11 +148,10 @@ API's
             }
             ``` 
             > ##### UnRegister Meeting
-    - [X] <a>post</a>  /api/v1/meeting/unregistraion
+    - [X] <a>post</a>  /api/v1/meeting/unregistraion?token=$Token
         * Request
             ```json
             {
-                  "User_ID":"user_id",
                 "Meeting_ID":"meeting_id"
             }
             ```
@@ -240,15 +235,13 @@ $this->validate($request,[
 ## Support Materials
 
 ### [Avaliable validation rules](https://laravel.com/docs/5.6/validation#available-validation-rules)
+### [JWT Installation](https://github.com/tymondesigns/jwt-auth/wiki/Installation)
+### [JWT Create token](https://github.com/tymondesigns/jwt-auth/wiki/Creating-Tokens)
+## issues solutions
+### [Generate random key for JWT](https://github.com/tymondesigns/jwt-auth/issues/1425)
+### [Non-static method Tymon\JWTAuth\JWTAuth::attempt()](https://github.com/tymondesigns/jwt-auth/issues/182)
     
-# hello
     
     
-    
             
             
-            
-            
-            
-            
-                        

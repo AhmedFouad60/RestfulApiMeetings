@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Meeting;
+use App\User;
 use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('jwt.auth');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -24,20 +30,25 @@ class RegistrationController extends Controller
         $user_id=$request->input("user_id");
 
         /***********apply business logic*******/
-        $meeting=[
-            'title'=>'title',
-            'description'=>'description',
-            'time'=>'time',
-            'user_id'=>'user_id',
-            'view_meeting'=>[
-                'href'=>'api/v1/meeting/1',
-                'method'=>'GET'
-            ]
-        ];
 
-        $user=[
-            'first_name'=>'first_name'
-        ];
+        $meeting=Meeting::findOrFail($meeting_id);
+        $user=User::findOrFail($user_id);
+
+
+        $message=[
+            'msg'=>'User Already Registered to the Meeting',
+            'meeting'=>$meeting,
+            'user'=>$user,
+            'unregister'=>[
+                'href'=>'api/v1/meeting/registration/'.$meeting->id,
+                'method'=>'DELETE'
+            ]];
+
+        if ($meeting->users()->where('user_id',$user_id)->first()){
+             return response()->json($message,404);
+        }
+
+        $user->meetings()->attach($meeting_id);
 
 
         /***********Response*******/
@@ -47,7 +58,7 @@ class RegistrationController extends Controller
             'meeting'=>$meeting,
             'user'=>$user,
             'unregister'=>[
-                'href'=>'api/v1/meeting/registration/1',
+                'href'=>'api/v1/meeting/registration/'.$meeting_id,
                 'method'=>'DELETE'
             ]
 
@@ -70,37 +81,31 @@ class RegistrationController extends Controller
     public function destroy($id)
     {
 
-        /***********validate input*******/
+        $meeting=Meeting::findOrFail($id);
 
+        if(! $user=JWTAuth::parseToken()->authenticate()){
+            return response()->json(['msg'=>'user not found'],404);
+        }
 
-        /***********Extract Data*******/
-        
+        if (!$meeting->users()->where('user_id',$user->id)->first()){
+
+            /***********Response 404 *******/
+            return response()->json(['msg'=>'user not registered for meeting ,update not successful'],404);
+        }
+     $meeting->users()->detach($user->id);
 
         /***********apply business logic*******/
-        $meeting=[
-            'title'=>'title',
-            'description'=>'description',
-            'time'=>'time',
-            'user_id'=>'user_id',
-            'view_meeting'=>[
-                'href'=>'api/v1/meeting/1',
-                'method'=>'GET'
-            ]
-        ];
 
-        $user=[
-            'first_name'=>'first_name'
-        ];
 
 
         /***********Response*******/
 
         $response=[
-            'msg'=>'User Registered to the Meeting',
+            'msg'=>'User UnRegistered from the Meeting',
             'meeting'=>$meeting,
             'user'=>$user,
             'register'=>[
-                'href'=>'api/v1/meeting/registration/1',
+                'href'=>'api/v1/meeting/registration/'.$id,
                 'method'=>'POST'
             ]
 

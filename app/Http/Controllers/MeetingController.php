@@ -6,13 +6,18 @@ use App\Meeting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use JWTAuth;
+
+
 
 class MeetingController extends Controller
 {
 
     public function __construct()
     {
-       // $this->middleware('name');
+        $this->middleware('jwt.auth',['only'=>[
+            "store","destroy","update"
+        ]]);
     }
 
 
@@ -56,7 +61,7 @@ class MeetingController extends Controller
 
         /***********validate input*******/
         $this->validate($request,[
-           'title'=>'required|max:150',
+           'title'=>'required',
            'time'=>'required',
            'description'=>'required'
         ]);
@@ -64,10 +69,19 @@ class MeetingController extends Controller
         /***********Extract Data*******/
 
 
+
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+
+
+
+
+
         $title=$request->input('title');
         $description=$request->input('description');
         $time=$request->input('time');
-        $user_id=$request->input('user_id');
+        $user_id=$user->id;
 
         /***********apply business logic*******/
         $meeting=new Meeting([
@@ -78,7 +92,7 @@ class MeetingController extends Controller
 
 
         if($meeting->save()){
-            $meeting->Users()->attach($user_id); //To add this entiry to the pivate table that has the relationship of the two tables {users,Meetings}
+            $meeting->users()->attach($user_id); //To add this entiry to the pivate table that has the relationship of the two tables {users,Meetings}
             $meeting=[
                 'title'=> $title,
                 'description'=>$description,
@@ -127,7 +141,7 @@ class MeetingController extends Controller
     public function show($id)
     {
         //Get the Meetings and the related users
-       $meeting=Meeting::with('users')->where('id',$id)->firstOrFail(); // if there is not fitting data laravel will send back 404 Page
+       $meeting=Meeting::with('users')->where('id',$id)->findOrFail($id); // if there is not fitting data laravel will send back 404 Page
         $meeting->view_meetings=[
             'href'=>'api/v1/meeting',
             'method'=>'GET'
@@ -158,30 +172,26 @@ class MeetingController extends Controller
             'title'=>'required',
             'time'=>'required|date_format:YmdHie',
             'description'=>'required',
-            'user_id'=>'required'
 
         ]);
         /***********Extract Data*******/
+
+        if(! $user=JWTAuth::parseToken()->authenticate()){
+            return response()->json(['msg'=>'user not found'],404);
+        }
+
+
         $title=$request->input('title');
         $time=$request->input('time');
         $description=$request->input('description');
-        $user_id=$request->input('user_id');
+        $user_id=$request->$user->id;
         /***********apply business logic*******/
-        $meeting=[
-            'title'=> $title,
-            'description'=>$description,
-            'time'=>$time,
-            'user_id'=>$user_id,
-            'view_meeting'=>[
-                'href'=>'api/v1/meeting/1',
-                'method'=>'GET'
-            ]
-        ];
-
-        $meeting=Meeting::with('users')->firstOrFail($id);
 
 
-        if (!$meeting->Users()->where('users.id',$user_id)->first()){
+        $meeting=Meeting::with('users')->findOrFail($id);
+
+
+        if (!$meeting->users()->where('user_id',$user_id)->first()){
 
             /***********Response 404 *******/
             return response()->json(['msg'=>'user not registered for meeting ,update not successful'],404);
@@ -219,12 +229,23 @@ class MeetingController extends Controller
     public function destroy($id)
     {
         $meeting=Meeting::findOrFail($id); //find the Meeting with the $id
-        $users=$meeting->Users; // find the users that relate to the Meeting to detach them before delete
-        $meeting->Users()->detach();
+
+        if(! $user=JWTAuth::parseToken()->authenticate()){
+            return response()->json(['msg'=>'user not found'],404);
+        }
+
+        if (!$meeting->users()->where('user_id',$user->id)->first()){
+
+            /***********Response 404 *******/
+            return response()->json(['msg'=>'user not registered for meeting ,update not successful'],404);
+        }
+
+        $users=$meeting->users; // find the users that relate to the Meeting to detach them before delete
+        $meeting->users()->detach();
 
         if (!$meeting->delete()){
             foreach ($users as $user) {
-                $meeting->Users()->attach($user);
+                $meeting->users()->attach($user);
 
             }
             return response()->json(['msg'=>'deletion failed'],404);
