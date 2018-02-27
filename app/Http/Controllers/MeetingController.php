@@ -78,7 +78,7 @@ class MeetingController extends Controller
 
 
         if($meeting->save()){
-            $meeting->Users()->attach($user_id);
+            $meeting->Users()->attach($user_id); //To add this entiry to the pivate table that has the relationship of the two tables {users,Meetings}
             $meeting=[
                 'title'=> $title,
                 'description'=>$description,
@@ -126,7 +126,8 @@ class MeetingController extends Controller
      */
     public function show($id)
     {
-       $meeting=Meeting::with('users')->where('id',$id)->firstOrFail();
+        //Get the Meetings and the related users
+       $meeting=Meeting::with('users')->where('id',$id)->firstOrFail(); // if there is not fitting data laravel will send back 404 Page
         $meeting->view_meetings=[
             'href'=>'api/v1/meeting',
             'method'=>'GET'
@@ -152,6 +153,7 @@ class MeetingController extends Controller
     {
 
         /***********validate input*******/
+
         $this->validate($request,[
             'title'=>'required',
             'time'=>'required|date_format:YmdHie',
@@ -179,7 +181,7 @@ class MeetingController extends Controller
         $meeting=Meeting::with('users')->firstOrFail($id);
 
 
-        if (!$meeting->users()->where('users.id',$user_id)->first()){
+        if (!$meeting->Users()->where('users.id',$user_id)->first()){
 
             /***********Response 404 *******/
             return response()->json(['msg'=>'user not registered for meeting ,update not successful'],404);
@@ -203,7 +205,8 @@ class MeetingController extends Controller
             'meeting'=>$meeting
         ];
 
-        return response().json($response,200);
+        return response()->json($response,200);
+
 
     }
 
@@ -215,16 +218,17 @@ class MeetingController extends Controller
      */
     public function destroy($id)
     {
-        /***********validate input*******/
+        $meeting=Meeting::findOrFail($id); //find the Meeting with the $id
+        $users=$meeting->Users; // find the users that relate to the Meeting to detach them before delete
+        $meeting->Users()->detach();
 
+        if (!$meeting->delete()){
+            foreach ($users as $user) {
+                $meeting->Users()->attach($user);
 
-        /***********Extract Data*******/
-
-
-
-        /***********apply business logic*******/
-
-
+            }
+            return response()->json(['msg'=>'deletion failed'],404);
+        }
 
         /***********Response*******/
         $response=[
